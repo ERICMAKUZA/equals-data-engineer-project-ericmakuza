@@ -3,17 +3,17 @@ import pymongo
 from faker import Faker
 from random import choice, randint
 
-# ✅ FIX 1: Create an instance of the Faker class
+# ✅  Create an instance of the Faker class
 fake = Faker()
 
-# Connect to the local end of the tunnel
+# Connect to the Document DB
 CONNECTION_STRING = "mongodb://admin01:Financial_Ass1gnement@source-docdb-cluster.cluster-c1wii8u4iply.eu-north-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
 
 client = pymongo.MongoClient(
     CONNECTION_STRING,
     tls=True,
     tlsCAFile='global-bundle.pem',
-    # ✅ FIX 2: Allow connection despite hostname mismatch
+    # ✅ Allow connection despite hostname mismatch
     tlsAllowInvalidHostnames=True
 )
 
