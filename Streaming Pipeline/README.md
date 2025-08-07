@@ -20,7 +20,7 @@ The pipeline follows a decoupled, serverless architecture that is highly scalabl
 Data Flow:
 EC2 Instance (Producer) -> Amazon SQS (Queue) -> AWS Lambda (Processor) -> Amazon DynamoDB (Datastore)
 
-!(https://www.google.com/search?q=https://i.imgur.com/9O1nL5E.png)
+
 
 Producer (financial_producer.py): A Python script running on an EC2 t2.micro instance generates simulated financial transaction data (e.g., transaction ID, amount, merchant).
 

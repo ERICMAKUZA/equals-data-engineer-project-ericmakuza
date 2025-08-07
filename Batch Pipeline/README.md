@@ -26,7 +26,7 @@ Source Databases: A PostgreSQL database on Amazon RDS holds relational data (cus
 
 Ingestion (AWS DMS): AWS Database Migration Service (DMS) performs a full load extraction from both source databases. It is a managed service that handles the connection and data type conversion, landing the raw data as Parquet files in the S3 "Raw Zone".
 
-Raw Zone (Amazon S3): An S3 bucket (/raw-dms/) acts as the data lake's landing area for raw, unaltered data.
+Raw Zone (Amazon S3): An S3 bucket (/raw/) acts as the data lake's landing area for raw, unaltered data.
 
 Metadata Catalog (AWS Glue Catalog): An AWS Glue Crawler automatically scans the data from the PostgreSQL source, while the schema for the DocumentDB source is defined manually to ensure accuracy. This creates a queryable metadata layer over the raw data.
 
@@ -72,16 +72,34 @@ Source Databases:
 
 Launch an Amazon RDS for PostgreSQL instance (version 16 or lower is recommended for Glue compatibility).
 
-![createrds](images/createrds.png)
+![create-rds](images/createrds.png)
 
 Launch an Amazon DocumentDB cluster.
-![createdocdb](images/createdocdb.png)
+![create-docdb](images/createdocdb.jpg)
+
+Test Your connection to RDS using DBeaver(Ensure you have an inbound rule to allow your PC to access)
+
+![rdstestconnection](images/rdstestconnection.png)
+
+Create a jumpbox(EC2 instance to connect to Docdb)
+
+![createjumpox](images/createjumpox.png)
 
 Populate both databases with sample data using the scripts in /data_population. Ensure the DMS database user has been granted SELECT privileges on all tables in PostgreSQL and the readAnyDatabase & clusterMonitor roles in DocumentDB.
+
+Your Initial Schema should e like 
+
+![initial-schema](images/initial-schema.png)
+
+Verify Your Docdb is populated
+
+![verifydocuments](images/verifydocuments.png)
 
 Credential Management:
 
 Store the credentials for both RDS and DocumentDB in AWS Secrets Manager.
+
+![secretmanager](images/secretmanager.jpg)
 
 AWS DMS Setup:
 
@@ -93,11 +111,15 @@ Create a Target Endpoint pointing to your S3 bucket.
 
 Create and run the two migration tasks (rds-to-s3-full-load and docdb-to-s3-full-load).
 
+![migrationtaskssuccess](images/migrationtaskssuccess.png)
+
 AWS Glue & Athena Setup:
 
 Create a Glue Database named financial_data_db.
 
 Create and run the postgres-data-crawler to catalog the relational data.
+
+![Raw data crawler](images/raw-crawler.png)
 
 Manually create the transaction_events table in the catalog to ensure a correct schema.
 
@@ -105,7 +127,16 @@ Create the transform-to-star-schema Glue ETL job using the script from /glue_scr
 
 Run the transformation job.
 
+![gluejob-success](images/gluejob-success.png)
+
+Verify dim and Fact tables are created
+
+![analytics-success](images/analytics-success.png)
+
 Create and run the final analytics-data-crawler to catalog the transformed tables.
+
+![analytics-crawler](images/analytics-crawler.png)
+
 
 Configure an S3 bucket for Athena query results.
 
