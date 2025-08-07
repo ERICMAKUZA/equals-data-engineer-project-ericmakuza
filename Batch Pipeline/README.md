@@ -70,7 +70,7 @@ Create VPC Endpoints for S3 (Gateway), STS (Interface), and Secrets Manager (Int
 
 Source Databases:
 
-Launch an Amazon RDS for PostgreSQL instance (version 16 or lower is recommended for Glue compatibility).
+Launch an Amazon RDS for PostgreSQL instance .
 
 ![create-rds](images/createrds.png)
 
@@ -99,7 +99,7 @@ Credential Management:
 
 Store the credentials for both RDS and DocumentDB in AWS Secrets Manager.
 
-![secretmanager](images/secretmanager.jpg)
+![secretmanager](images/secretmanager.png)
 
 AWS DMS Setup:
 
@@ -140,7 +140,26 @@ Create and run the final analytics-data-crawler to catalog the transformed table
 
 Configure an S3 bucket for Athena query results.
 
+
+Run test Queries from Athena
+
+SELECT
+  c.name,
+  c.email,
+  SUM(f.amount) AS total_transaction_amount
+FROM fact_transactions AS f
+JOIN dim_customers AS c
+  ON f.customer_key = c.customer_key
+GROUP BY
+  c.name,
+  c.email
+ORDER BY
+  total_transaction_amount DESC;
+
+![testquery](images/testquery.png)
+
 Code & Process Documentation
+
 /glue_scripts/transform-to-star-schema.py: This is the core logic of the pipeline.
 
 Load Phase: It begins by loading the raw tables (customers, accounts, transactions) from the Glue Catalog. For the problematic DocumentDB data, it bypasses the catalog and reads directly from S3, applying a manually defined schema in the code to guarantee correctness.

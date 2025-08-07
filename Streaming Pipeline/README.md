@@ -20,6 +20,7 @@ The pipeline follows a decoupled, serverless architecture that is highly scalabl
 Data Flow:
 EC2 Instance (Producer) -> Amazon SQS (Queue) -> AWS Lambda (Processor) -> Amazon DynamoDB (Datastore)
 
+![streamingpipeline-architecture](images/streamingpipeline-architecture.png)
 
 
 Producer (financial_producer.py): A Python script running on an EC2 t2.micro instance generates simulated financial transaction data (e.g., transaction ID, amount, merchant).
@@ -57,26 +58,34 @@ Lambda Role (Lambda-SQS-DynamoDB-Role):
 
 Trusted Entity: Lambda
 
-Permissions: AWSLambdaSQSQueueExecutionRole and AmazonDynamoDBFullAccess (In production, restrict to dynamodb:PutItem on the specific table ARN).
+Permissions: AWSLambdaSQSQueueExecutionRole and AmazonDynamoDBPutitem
 
 2. Amazon SQS Queue
 Create a Standard SQS queue named FinancialTransactionQueue.
+
+![Amazon SQS](images/sqs.png)
 
 Note the Queue URL after creation.
 
 3. Amazon DynamoDB Table
 Create a DynamoDB table named RealTimeTransactions.
 
+![Dynamo Table](images/dynamo-table.png)
+
 Set the Partition key to transaction_id (Type: String).
 
 4. AWS Lambda Function
 Create a Lambda function named ProcessFinancialStream.
+
+![Create Lambda](images/createlambda.png)
 
 Runtime: Python 3.9+
 
 Execution Role: Attach the Lambda-SQS-DynamoDB-Role created in Step 1.
 
 Add Trigger: Configure an SQS trigger pointing to the FinancialTransactionQueue.
+
+![SQS Trigger](images/sqs-lambda.png)
 
 Code: Paste the contents of lambda/lambda_function.py into the code editor and deploy.
 
@@ -123,11 +132,17 @@ Update the QUEUE_URL variable in financial_producer.py with your SQS queue URL.
 
 Run the producer script from your EC2 instance's terminal: python3 financial_producer.py.
 
+![transactionsimulation](images/transactionsimulation.png)
+
 Verification:
 
 Watch the real-time logs in CloudWatch for the ProcessFinancialStream Lambda function to see "Successfully processed..." messages.
 
+![cloudwatchsuccesslogs](images/cloudwatchsuccesslogs.png)
+
 Go to the DynamoDB console, select the RealTimeTransactions table, and click Explore table items to see the new data arriving.
+
+![dynamoresults](images/dynamoresults.png)
 
 Challenges & Solutions
 During development, two key challenges were encountered and resolved:
