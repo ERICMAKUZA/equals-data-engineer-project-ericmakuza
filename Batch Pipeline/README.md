@@ -141,22 +141,6 @@ Create and run the final analytics-data-crawler to catalog the transformed table
 Configure an S3 bucket for Athena query results.
 
 
-Run test Queries from Athena
-
-SELECT
-  c.name,
-  c.email,
-  SUM(f.amount) AS total_transaction_amount
-FROM fact_transactions AS f
-JOIN dim_customers AS c
-  ON f.customer_key = c.customer_key
-GROUP BY
-  c.name,
-  c.email
-ORDER BY
-  total_transaction_amount DESC;
-
-![testquery](images/testquery.png)
 
 Code & Process Documentation
 
@@ -186,6 +170,7 @@ Verify the tables: You should see dim_customers, dim_accounts, dim_dates, and fa
 Run analytical queries to test the model. Example:
 
 -- Find the total transaction amount per customer
+
 SELECT
   c.name,
   c.email,
@@ -193,8 +178,13 @@ SELECT
 FROM fact_transactions AS f
 JOIN dim_customers AS c
   ON f.customer_key = c.customer_key
-GROUP BY 1, 2
-ORDER BY 3 DESC;
+GROUP BY
+  c.name,
+  c.email
+ORDER BY
+  total_transaction_amount DESC;
+
+![testquery](images/testquery.png)
 
 Data Quality & Governance
 Data Quality:

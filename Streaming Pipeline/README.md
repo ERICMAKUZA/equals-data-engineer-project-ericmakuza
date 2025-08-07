@@ -154,3 +154,33 @@ Solution: A serverless alternative was designed using SQS as a message buffer an
 Technical Error: The Lambda function initially failed with the error Float types are not supported. Use Decimal types instead.
 
 Solution: The error was diagnosed using CloudWatch logs. The Lambda code was modified to import Python's Decimal library and explicitly convert all floating-point numbers to the Decimal type before attempting to write them to DynamoDB, ensuring data precision and compatibility.
+
+
+
+# 🚀 **Real-Time Financial Transaction Analytics Pipeline**
+
+This project demonstrates a **serverless, event-driven data pipeline on AWS** for ingesting, processing, and analyzing simulated financial transactions in near-real-time. The entire infrastructure is designed to be compliant with the **AWS Free Tier**, showcasing a **cost-effective** approach to streaming data challenges.
+
+---
+
+## 📚 **Table of Contents**
+
+- [🧱 Architecture](#architecture)
+- [☁️ AWS Services Used](#aws-services-used)
+- [⚙️ Setup Instructions](#setup-instructions)
+- [📄 Code Documentation](#code-documentation)
+- [▶️ How to Use](#how-to-use)
+- [🔍 Challenges & Solutions](#challenges--solutions)
+
+---
+
+## 🧱 **Architecture**
+
+The pipeline follows a **decoupled, serverless architecture** that is highly scalable and resilient.
+
+**🔁 Data Flow:**  
+`EC2 Instance (Producer)` → `Amazon SQS (Queue)` → `AWS Lambda (Processor)` → `Amazon DynamoDB (Datastore)`
+
+![streamingpipeline-architecture](images/streamingpipeline-architecture.png)
+
+---
