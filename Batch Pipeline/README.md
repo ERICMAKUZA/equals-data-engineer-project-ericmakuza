@@ -93,7 +93,7 @@ Amazon Athena (Querying)
 
 ### 2. 🌐 VPC & Endpoints
 
-- ✅ Provision all resources within a single VPC
+- ✅ Provision all resources within the  VPC
 - ✅ Create VPC Endpoints:
   - **S3** (Gateway)
   - **STS** (Interface)
@@ -121,10 +121,10 @@ Amazon Athena (Querying)
 ![Create Jumpbox](images/createjumpox.png)
 
 #### Data Population
-- Populate databases using scripts in `/data_population`
-- Grant appropriate permissions:
-  - **PostgreSQL**: `SELECT` privileges on all tables
-  - **DocumentDB**: `readAnyDatabase` & `clusterMonitor` roles
+- Populate databases using scripts in `/Data_Loading`, and run from there
+- You  copy  them using scp to your jumpbox EC2 instance:
+  - **PostgreSQL**: run the create_postgres_schema.sql from your DBeaver  to create schema and then run the Populate_PostgreSQL
+  - **DocumentDB**: Run the populate_docdb to populate
 
 #### Initial Schema Verification
 
@@ -266,11 +266,11 @@ ORDER BY
 ### 🔴 Challenge 1: No Access to Redshift on Free Tier
 **Problem**: Redshift could not be used as the Datawarehouse
 ```
-❌ Initial plan: Glue for ingestion
+❌ Initial plan: Redshift as a Data Warehouse
 ✅ Solution: Pivoted to uilding a Data Lakehouse using S3 for storage and Athena as a query engine
 ```
 
-### 🔴 Challenge 3: Schema Discovery Issues
+### 🔴 Challenge 2: Schema Discovery Issues
 **Problem**: Glue Crawler couldn't interpret DocumentDB Parquet schema
 ```
 ❌ Crawler approach: Unreliable schema detection
