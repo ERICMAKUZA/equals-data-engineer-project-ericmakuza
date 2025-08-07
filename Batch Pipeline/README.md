@@ -45,6 +45,8 @@ Amazon S3 (Analytics Zone)
 Amazon Athena (Querying)
 ```
 
+![Architecture](images/architecture.png)
+
 ### 📊 Architecture Components
 
 | **Component** | **Service** | **Purpose** |
