@@ -1,0 +1,5 @@
+Execution ID,Query,Start time,Status,Run time,Data scanned,Query engine version used
+c67d3853-2d16-4723-aaf3-9c8a61b333b3,SELECT * FROM dim_customers LIMIT 10,2025-08-06T14:05:22.489+02:00,SUCCEEDED,382 ms,4.85 KB,Athena engine version 3
+fe7657d5-7fee-48a7-b8bd-d933b2df2d33,SELECT * FROM fact_transactions LIMIT 10,2025-08-06T14:05:10.030+02:00,SUCCEEDED,419 ms,4.32 KB,Athena engine version 3
+1ea8ece8-b229-405b-b532-1a5fc030de70,SELECT * FROM fact_transactions LIMIT 10,2025-08-06T14:03:35.828+02:00,SUCCEEDED,405 ms,4.32 KB,Athena engine version 3
+c3a1012b-8355-40a0-819e-b054fc8b470e,SELECT * FROM dim_customers LIMIT 10,2025-08-06T14:02:42.544+02:00,SUCCEEDED,710 ms,6.05 KB,Athena engine version 3
